@@ -6,7 +6,7 @@ import { authService } from "@/features/auth/services/authService";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("name@company.com");
+  const [email, setEmail] = useState("correo@ejemplo.com");
   const [password, setPassword] = useState("123456");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -30,17 +30,17 @@ export function LoginPage() {
   return (
     <AuthLayout
       title="ColaboraCar"
-      subtitle="Sign in to continue your journey."
+      subtitle="Inicia sesión para continuar tu viaje."
       footer={
         <>
-          <div className="mt-8 flex items-center justify-center gap-4 text-[1.2rem] font-black uppercase tracking-[0.18em] text-[#7a6d6d]">
-            <span className="h-px flex-1 bg-[#b4a9a9]" />
-            <span>Or</span>
-            <span className="h-px flex-1 bg-[#b4a9a9]" />
+          <div className="auth-divider">
+            <span className="auth-divider-line" />
+            <span>O</span>
+            <span className="auth-divider-line" />
           </div>
 
           <Link to="/auth/register" className="auth-button-secondary">
-            Register
+            Registrarse
           </Link>
         </>
       }
@@ -53,10 +53,10 @@ export function LoginPage() {
         )}
 
         <AuthField
-          label="Email address"
+          label="Correo electrónico"
           type="email"
           value={email}
-          placeholder="name@company.com"
+          placeholder="correo@ejemplo.com"
           autoComplete="email"
           onChange={setEmail}
           icon={
@@ -74,14 +74,14 @@ export function LoginPage() {
         />
 
         <div className="mb-4 flex items-center justify-between gap-4">
-          <label className="text-[1.05rem] font-black uppercase tracking-[0.04em] text-[#3a2f2f]">
-            Password
+          <label className="text-sm font-black uppercase tracking-wide text-[#3a2f2f]">
+            Contraseña
           </label>
           <button
             type="button"
-            className="text-[1.1rem] font-black text-[#d93a43] transition hover:text-[#c12c33]"
+            className="text-sm font-black text-[#d93a43] transition hover:text-[#c12c33]"
           >
-            Forgot password?
+            ¿Olvidaste tu contraseña?
           </button>
         </div>
 
@@ -147,7 +147,7 @@ export function LoginPage() {
           className="auth-button-primary"
           disabled={isLoading}
         >
-          {isLoading ? "Login..." : "Login"}
+          {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
         </button>
       </form>
     </AuthLayout>

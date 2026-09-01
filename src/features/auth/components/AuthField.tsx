@@ -22,7 +22,7 @@ export function AuthField({
   return (
     <div className="mb-6">
       <div className="mb-2 flex items-center justify-between gap-4">
-        <label className="text-[1.05rem] font-black uppercase tracking-[0.04em] text-[#3a2f2f]">
+        <label className="text-sm font-black uppercase tracking-wide text-[#3a2f2f]">
           {label}
         </label>
         {rightAction}
@@ -40,7 +40,7 @@ export function AuthField({
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          className="w-full border-none bg-transparent text-[1.12rem] font-medium text-[#2f2a2a] placeholder:text-[#7a6d6d] focus:outline-none"
+          className="input-base text-base font-medium"
         />
         {rightAction && type === "password" ? (
           <div className="ml-auto">{rightAction}</div>

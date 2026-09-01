@@ -46,8 +46,28 @@ export const authService = {
 
     return response.json();
   },
-  logout: () => {
+  logout: async () => {
+    const token = Cookies.get(COOKIE_NAME);
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000/api"}/auth/logout`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        credentials: "include",
+      },
+    );
+
     Cookies.remove(COOKIE_NAME);
+
+    if (!response.ok) {
+      throw new Error("No se pudo cerrar sesión");
+    }
+
+    return response.json() as Promise<{ message: string }>;
   },
   isAuthenticated: () => Boolean(Cookies.get(COOKIE_NAME)),
 };

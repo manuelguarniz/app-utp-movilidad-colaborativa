@@ -30,15 +30,15 @@ export function RegisterPage() {
 
   return (
     <AuthLayout
-      title="Register"
+      title="Registrarse"
       footer={
         <p className="text-center text-base font-medium text-[#4b3d3d]">
-          Already have an account?{" "}
+          ¿Ya tienes cuenta?{" "}
           <Link
             to="/auth/login"
             className="font-black text-[#d93a43] hover:text-[#c12c33]"
           >
-            Log in
+            Inicia sesión
           </Link>
         </p>
       }
@@ -57,9 +57,9 @@ export function RegisterPage() {
         )}
 
         <AuthField
-          label="Name"
+          label="Nombre"
           value={form.name}
-          placeholder="John Doe"
+          placeholder="Juan Pérez"
           autoComplete="name"
           onChange={(value) => handleChange("name", value)}
           icon={
@@ -77,10 +77,10 @@ export function RegisterPage() {
         />
 
         <AuthField
-          label="Email address"
+          label="Correo electrónico"
           type="email"
           value={form.email}
-          placeholder="name@company.com"
+          placeholder="correo@ejemplo.com"
           autoComplete="email"
           onChange={(value) => handleChange("email", value)}
           icon={
@@ -98,7 +98,7 @@ export function RegisterPage() {
         />
 
         <AuthField
-          label="Password"
+          label="Contraseña"
           type={showPassword ? "text" : "password"}
           value={form.password}
           placeholder="••••••••"
@@ -155,7 +155,7 @@ export function RegisterPage() {
         />
 
         <button type="submit" className="auth-button-primary">
-          Register
+          Registrarse
         </button>
       </form>
     </AuthLayout>

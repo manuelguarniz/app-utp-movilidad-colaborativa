@@ -1,28 +1,13 @@
 import { apiClient } from "@/shared/api/apiClient";
-
-type DashboardStats = {
-  travelers: number;
-  activeTrips: number;
-  satisfaction: number;
-  city: string;
-  updatedAt: string;
-};
-
-type Ride = {
-  id: string;
-  driver: string;
-  from: string;
-  to: string;
-  seats: number;
-  status: string;
-};
+import type { RideOffer, RideSearchFilters } from "@/features/dashboard/types";
 
 export const dashboardService = {
-  getStats: () => apiClient.get<DashboardStats>("/dashboard/stats"),
-  createRide: (payload: { from: string; to: string }) =>
-    apiClient.post("/rides/create", payload),
-  getRides: async (): Promise<Ride[]> => {
-    const response = await apiClient.get<{ data: Ride[] }>("/rides");
+  getRides: async (filters?: RideSearchFilters): Promise<RideOffer[]> => {
+    const response = await apiClient.get<{ data: RideOffer[] }>("/rides", {
+      params: filters,
+    });
     return response.data;
   },
+  reserveRide: (rideId: string) =>
+    apiClient.post<{ message: string }>(`/rides/${rideId}/reserve`),
 };

@@ -1,21 +1,34 @@
 type BrandLogoProps = {
   compact?: boolean;
+  showWordmark?: boolean;
+  inline?: boolean;
 };
 
-export function BrandLogo({ compact = false }: BrandLogoProps) {
+export function BrandLogo({
+  compact = false,
+  showWordmark = true,
+  inline = false,
+}: BrandLogoProps) {
+  const iconSize =
+    compact && inline ? "h-8 w-10" : compact ? "h-12 w-16" : "h-16 w-20";
+  const containerSize =
+    compact && inline ? "h-8 w-10" : compact ? "h-16 w-16" : "h-20 w-20";
+
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div
+      className={
+        inline
+          ? "flex items-center gap-2"
+          : "flex flex-col items-center justify-center"
+      }
+    >
       <div
-        className={
-          compact
-            ? "mb-3 flex h-20 w-20 items-center justify-center"
-            : "mb-4 flex h-24 w-24 items-center justify-center"
-        }
+        className={`flex ${containerSize} items-center justify-center`}
         aria-label="ColaboraCar logo"
       >
         <svg
           viewBox="0 0 120 80"
-          className={compact ? "h-16 w-20" : "h-20 w-24"}
+          className={iconSize}
           role="img"
           aria-hidden="true"
         >
@@ -39,9 +52,19 @@ export function BrandLogo({ compact = false }: BrandLogoProps) {
         </svg>
       </div>
 
-      <div className="text-center text-[2.2rem] font-black leading-none tracking-[-0.08em] text-[#d93a43]">
-        ColaboraCar
-      </div>
+      {showWordmark ? (
+        <div
+          className={
+            inline
+              ? "text-lg font-black leading-none tracking-tight text-[#d93a43]"
+              : "text-center text-2xl font-black leading-none tracking-tight text-[#d93a43]"
+          }
+        >
+          ColaboraCar
+        </div>
+      ) : (
+        <span className="sr-only">ColaboraCar</span>
+      )}
     </div>
   );
 }

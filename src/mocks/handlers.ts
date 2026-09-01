@@ -13,15 +13,38 @@ const buildUser = (overrides = {}) => ({
   ...overrides,
 });
 
-const buildDashboardStats = () => ({
-  travelers: faker.number.int({ min: 20, max: 220 }),
-  activeTrips: faker.number.int({ min: 8, max: 80 }),
-  satisfaction: Number(
-    faker.number.float({ min: 4.2, max: 4.9, fractionDigits: 1 }).toFixed(1),
-  ),
-  city: faker.location.city(),
-  updatedAt: new Date().toISOString(),
-});
+const MOCK_RIDES = [
+  {
+    id: "ride-1",
+    price: 45,
+    vehicle: "Toyota Yaris Blanco • ABC-123",
+    availableSeats: 3,
+    luggageAvailable: true,
+    driver: {
+      name: "Carlos M.",
+      rating: 4.9,
+      reviewCount: 120,
+    },
+    departure: {
+      window: "14:15 - 14:25",
+    },
+  },
+  {
+    id: "ride-2",
+    price: 35,
+    vehicle: "Chevrolet Spark Rojo • XYZ-789",
+    availableSeats: 1,
+    luggageAvailable: false,
+    driver: {
+      name: "Andrea P.",
+      rating: 4.7,
+      reviewCount: 45,
+    },
+    departure: {
+      window: "14:30 - 14:40",
+    },
+  },
+];
 
 export const handlers = [
   http.post(`${API_BASE}/auth/login`, async ({ request }) => {
@@ -32,7 +55,7 @@ export const handlers = [
 
     if (!body.email || !body.password) {
       return HttpResponse.json(
-        { message: "Email y contraseña requeridos" },
+        { message: "Correo y contraseña requeridos" },
         { status: 400 },
       );
     }
@@ -75,44 +98,29 @@ export const handlers = [
     );
   }),
 
-  http.get(`${API_BASE}/dashboard/stats`, () => {
-    return HttpResponse.json(buildDashboardStats(), { status: 200 });
-  }),
-
-  http.post(`${API_BASE}/rides/create`, async ({ request }) => {
-    const body = (await request.json()) as { from?: string; to?: string };
-
+  http.post(`${API_BASE}/auth/logout`, () => {
     return HttpResponse.json(
-      {
-        ok: true,
-        id: faker.string.uuid(),
-        route: {
-          from: body?.from ?? faker.location.city(),
-          to: body?.to ?? faker.location.city(),
-        },
-        status: "scheduled",
-        createdAt: new Date().toISOString(),
-      },
-      { status: 201 },
+      { message: "Sesión cerrada correctamente" },
+      { status: 200 },
     );
   }),
 
   http.get(`${API_BASE}/rides`, () => {
+    return HttpResponse.json({ data: MOCK_RIDES }, { status: 200 });
+  }),
+
+  http.post(`${API_BASE}/rides/:rideId/reserve`, ({ params }) => {
+    const ride = MOCK_RIDES.find((item) => item.id === params.rideId);
+
+    if (!ride) {
+      return HttpResponse.json(
+        { message: "Viaje no encontrado" },
+        { status: 404 },
+      );
+    }
+
     return HttpResponse.json(
-      {
-        data: Array.from({ length: 4 }, () => ({
-          id: faker.string.uuid(),
-          driver: faker.person.fullName(),
-          from: faker.location.city(),
-          to: faker.location.city(),
-          seats: faker.number.int({ min: 1, max: 4 }),
-          status: faker.helpers.arrayElement([
-            "pending",
-            "confirmed",
-            "completed",
-          ]),
-        })),
-      },
+      { message: `Reserva confirmada con ${ride.driver.name}` },
       { status: 200 },
     );
   }),
