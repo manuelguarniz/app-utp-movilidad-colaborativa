@@ -1,11 +1,15 @@
 import { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthField } from "@/features/auth/components/AuthField";
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
 import { authService } from "@/features/auth/services/authService";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const profileCompleted = Boolean(
+    (location.state as { profileCompleted?: boolean } | null)?.profileCompleted,
+  );
   const [email, setEmail] = useState("correo@ejemplo.com");
   const [password, setPassword] = useState("123456");
   const [error, setError] = useState("");
@@ -19,7 +23,7 @@ export function LoginPage() {
 
     try {
       await authService.login(email, password);
-      navigate("/dashboard");
+      navigate("/auth/verificacion");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al iniciar sesión");
     } finally {
@@ -46,6 +50,12 @@ export function LoginPage() {
       }
     >
       <form onSubmit={handleSubmit}>
+        {profileCompleted && (
+          <div className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+            Perfil completado. Ya puedes iniciar sesión.
+          </div>
+        )}
+
         {error && (
           <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
             {error}

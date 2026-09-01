@@ -74,12 +74,11 @@ export const handlers = [
 
   http.post(`${API_BASE}/auth/register`, async ({ request }) => {
     const body = (await request.json()) as {
-      name?: string;
       email?: string;
       password?: string;
     };
 
-    if (!body.name || !body.email || !body.password) {
+    if (!body.email || !body.password) {
       return HttpResponse.json(
         { message: "Faltan datos obligatorios" },
         { status: 400 },
@@ -89,12 +88,69 @@ export const handlers = [
     return HttpResponse.json(
       {
         message: "Usuario registrado correctamente",
+        registrationId: faker.string.uuid(),
         user: buildUser({
-          name: body.name,
           email: body.email,
+          name: body.email.split("@")[0] ?? "Usuario",
         }),
       },
       { status: 201 },
+    );
+  }),
+
+  http.post(`${API_BASE}/auth/verify-code`, async ({ request }) => {
+    const body = (await request.json()) as { code?: string };
+
+    if (!body.code || body.code.length !== 6) {
+      return HttpResponse.json(
+        { message: "Código inválido. Debe tener 6 dígitos." },
+        { status: 400 },
+      );
+    }
+
+    return HttpResponse.json(
+      { message: "Cuenta verificada correctamente" },
+      { status: 200 },
+    );
+  }),
+
+  http.post(`${API_BASE}/auth/resend-code`, () => {
+    return HttpResponse.json(
+      { message: "Código reenviado correctamente" },
+      { status: 200 },
+    );
+  }),
+
+  http.post(`${API_BASE}/auth/complete-profile`, async ({ request }) => {
+    const body = (await request.json()) as {
+      firstName?: string;
+      lastName?: string;
+      department?: string;
+      district?: string;
+      campus?: string;
+    };
+
+    if (
+      !body.firstName ||
+      !body.lastName ||
+      !body.department ||
+      !body.district ||
+      !body.campus
+    ) {
+      return HttpResponse.json(
+        { message: "Faltan datos obligatorios del perfil" },
+        { status: 400 },
+      );
+    }
+
+    return HttpResponse.json(
+      {
+        message: "Perfil completado correctamente",
+        user: buildUser({
+          name: `${body.firstName} ${body.lastName}`,
+        }),
+      },
+      { status: 200 },
     );
   }),
 
