@@ -1,7 +1,8 @@
 import { http, HttpResponse } from "msw";
 import { faker } from "@faker-js/faker";
 
-const API_BASE = "http://localhost:3000/api";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000/api";
 
 const buildUser = (overrides = {}) => ({
   id: faker.string.uuid(),

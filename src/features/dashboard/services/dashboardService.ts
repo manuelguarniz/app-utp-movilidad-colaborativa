@@ -18,16 +18,11 @@ type Ride = {
 };
 
 export const dashboardService = {
-  getStats: async (): Promise<DashboardStats> => {
-    const response = await apiClient.get<DashboardStats>("/dashboard/stats");
-    return response.data;
-  },
-  createRide: async (payload: { from: string; to: string }) => {
-    const response = await apiClient.post("/rides/create", payload);
-    return response.data;
-  },
+  getStats: () => apiClient.get<DashboardStats>("/dashboard/stats"),
+  createRide: (payload: { from: string; to: string }) =>
+    apiClient.post("/rides/create", payload),
   getRides: async (): Promise<Ride[]> => {
     const response = await apiClient.get<{ data: Ride[] }>("/rides");
-    return response.data.data;
+    return response.data;
   },
 };

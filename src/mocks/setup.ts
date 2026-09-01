@@ -1,9 +1,11 @@
 import { worker } from "@/mocks/browser";
 
-export function enableMocking() {
-  if (import.meta.env.DEV) {
-    worker.start({
-      onUnhandledRequest: "bypass",
-    });
+export async function enableMocking() {
+  if (!import.meta.env.DEV) {
+    return;
   }
+
+  return worker.start({
+    onUnhandledRequest: "bypass",
+  });
 }

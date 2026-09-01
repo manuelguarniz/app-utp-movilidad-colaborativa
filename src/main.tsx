@@ -16,14 +16,18 @@ const queryClient = new QueryClient({
   },
 });
 
-enableMocking();
+async function bootstrap() {
+  await enableMocking();
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
-  </React.StrictMode>,
-);
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </React.StrictMode>,
+  );
+}
+
+bootstrap();
